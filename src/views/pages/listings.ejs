@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>FindIt Dashboard - Item Listings</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#1754cf",
+              "primary-hover": "#1346b0",
+              "primary-light": "#eef4ff",
+              "background-light": "#ffffff",
+              "background-dark": "#111621",
+              "surface-light": "#f6f8fb",
+              "surface-dark": "#1a2130",
+              "text-primary": "#1e293b",
+              "text-secondary": "#64748b",
+              lost: "#ef4444",
+              found: "#10b981"
+            },
+            fontFamily: {
+              display: ["Manrope", "sans-serif"]
+            },
+            borderRadius: {
+              DEFAULT: "0.5rem",
+              lg: "0.75rem",
+              xl: "1rem",
+              "2xl": "1.5rem",
+              full: "9999px"
+            },
+            boxShadow: {
+              soft: "0 4px 20px -2px rgba(0, 0, 0, 0.05)",
+              card: "0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.06)"
+            }
+          }
+        }
+      };
+    </script>
+    <style>
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-surface-light dark:bg-background-dark font-display antialiased min-h-screen flex flex-col"
+  >
+    <%- include("../partials/navbar-main", { activePage: "listings", showCta: true }) %>
+    <main class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+        <div>
+          <h2
+            class="text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight mb-2"
+          >
+            Recent Listings
+          </h2>
+          <p class="text-slate-500 dark:text-slate-400">
+            Browse the latest items reported in your area.
+          </p>
+        </div>
+        <div class="flex flex-wrap items-center gap-3">
+          <button
+            class="px-4 py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-medium rounded-xl shadow-md hover:opacity-90 transition-opacity"
+          >
+            All Items
+          </button>
+          <button
+            class="px-4 py-2 bg-white dark:bg-surface-dark text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+          >
+            Lost
+          </button>
+          <button
+            class="px-4 py-2 bg-white dark:bg-surface-dark text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+          >
+            Found
+          </button>
+          <button
+            class="px-4 py-2 bg-white dark:bg-surface-dark text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center gap-2"
+          >
+            <span class="material-symbols-outlined text-[18px]">near_me</span>
+            Near Me
+          </button>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <% notices.forEach((notice) => { %>
+        <div
+          class="group bg-background-light dark:bg-surface-dark rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800 shadow-soft hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col"
+        >
+          <div class="relative aspect-[4/3] overflow-hidden">
+            <div
+              class="absolute top-3 left-3 z-10 px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider shadow-sm flex items-center gap-1 border <%= notice.type === 'lost' ? 'bg-red-50 text-red-600 border-red-100' : 'bg-emerald-50 text-emerald-600 border-emerald-100' %>"
+            >
+              <span
+                class="size-1.5 rounded-full <%= notice.type === 'lost' ? 'bg-red-500' : 'bg-emerald-500' %>"
+              ></span>
+              <%= notice.type === "lost" ? "Lost" : "Found" %>
+            </div>
+            <img
+              class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+              src="<%= notice.image_url || 'https://via.placeholder.com/640x480?text=FindIt' %>"
+              alt="Item image"
+            />
+          </div>
+          <div class="p-4 flex-1 flex flex-col">
+            <div class="flex justify-between items-start mb-2">
+              <h3
+                class="text-lg font-bold text-slate-900 dark:text-slate-100 line-clamp-1"
+              >
+                <%= notice.title %>
+              </h3>
+              <span class="text-xs text-slate-400 whitespace-nowrap pt-1"
+                ><%= notice.created_at %></span
+              >
+            </div>
+            <p
+              class="text-slate-500 dark:text-slate-400 text-sm line-clamp-2 mb-4 flex-grow"
+            >
+              <%= notice.description %>
+            </p>
+            <div class="border-t border-slate-100 dark:border-slate-700 pt-3 mt-auto">
+              <div
+                class="flex items-center text-slate-500 dark:text-slate-400 text-xs gap-1 mb-3"
+              >
+                <span class="material-symbols-outlined text-[16px]"
+                  >location_on</span
+                >
+                <%= notice.location_text %>
+              </div>
+              <a
+                class="w-full py-2 bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-semibold rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors flex items-center justify-center"
+                href="/items/<%= notice.id %>"
+              >
+                View Details
+              </a>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+      <div class="mt-12 flex justify-center pb-8">
+        <div class="flex items-center gap-2">
+          <button
+            class="p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-50"
+          >
+            <span class="material-symbols-outlined">chevron_left</span>
+          </button>
+          <button
+            class="size-10 flex items-center justify-center rounded-xl bg-primary text-white text-sm font-bold shadow-md shadow-primary/20"
+          >
+            1
+          </button>
+          <button
+            class="size-10 flex items-center justify-center rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium transition-colors"
+          >
+            2
+          </button>
+          <button
+            class="size-10 flex items-center justify-center rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium transition-colors"
+          >
+            3
+          </button>
+          <span class="text-slate-400 px-2">...</span>
+          <button
+            class="size-10 flex items-center justify-center rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium transition-colors"
+          >
+            12
+          </button>
+          <button
+            class="p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+          >
+            <span class="material-symbols-outlined">chevron_right</span>
+          </button>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

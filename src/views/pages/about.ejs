@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>FindIt - Legal & About</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1754cf",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#111621",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1a2232",
+                        "text-main": "#0e121b",
+                        "text-sub": "#4e6797",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-main dark:text-slate-100 font-display transition-colors duration-200">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<%- include("../partials/navbar-main", { activePage: "about", showCta: true }) %>
+<main class="flex flex-1 flex-col lg:flex-row max-w-[1440px] mx-auto w-full">
+    <aside class="w-full lg:w-72 lg:flex-shrink-0 border-b lg:border-b-0 lg:border-r border-slate-200 dark:border-slate-800 bg-surface-light dark:bg-surface-dark p-6 lg:min-h-[calc(100vh-73px)] lg:sticky lg:top-[73px] self-start">
+        <div class="flex flex-col gap-6">
+            <div class="flex flex-col gap-1">
+                <h1 class="text-text-main dark:text-white text-lg font-bold leading-normal">Navigation</h1>
+                <p class="text-slate-500 dark:text-slate-400 text-sm font-normal leading-normal">Jump to section</p>
+            </div>
+            <nav class="flex flex-col gap-2">
+                <a class="group flex items-center gap-3 px-4 py-3 rounded-xl bg-primary/10 text-primary transition-all" href="#about">
+                    <span class="material-symbols-outlined" style="font-size: 22px; font-variation-settings: 'FILL' 1;">info</span>
+                    <span class="text-sm font-bold leading-normal">About Us</span>
+                </a>
+                <a class="group flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all" href="#privacy">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors" style="font-size: 22px;">shield</span>
+                    <span class="text-sm font-medium leading-normal group-hover:text-text-main dark:group-hover:text-white">Privacy Policy</span>
+                </a>
+                <a class="group flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all" href="#terms">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors" style="font-size: 22px;">description</span>
+                    <span class="text-sm font-medium leading-normal group-hover:text-text-main dark:group-hover:text-white">Terms of Service</span>
+                </a>
+                <a class="group flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all" href="#cookies">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors" style="font-size: 22px;">cookie</span>
+                    <span class="text-sm font-medium leading-normal group-hover:text-text-main dark:group-hover:text-white">Cookie Policy</span>
+                </a>
+                <a class="group flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all" href="/contact">
+                    <span class="material-symbols-outlined group-hover:text-primary transition-colors" style="font-size: 22px;">mail</span>
+                    <span class="text-sm font-medium leading-normal group-hover:text-text-main dark:group-hover:text-white">Contact Support</span>
+                </a>
+            </nav>
+        </div>
+    </aside>
+    <div class="flex-1 min-w-0">
+        <div class="max-w-[800px] mx-auto px-6 py-10 lg:px-12 lg:py-16">
+            <div class="mb-12">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-900/30 text-primary text-xs font-bold uppercase tracking-wider mb-4 border border-blue-100 dark:border-blue-800">
+                    Legal Documentation
+                </div>
+                <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-text-main dark:text-white mb-6 leading-[1.1]">
+                    Legal & About <span class="text-primary">FindIt</span>
+                </h1>
+                <p class="text-lg md:text-xl text-slate-500 dark:text-slate-400 leading-relaxed font-normal max-w-2xl">
+                    Transparency is key to our community. Learn more about our mission, how we handle your data, and the rules of our platform.
+                </p>
+            </div>
+            <div class="h-px w-full bg-slate-200 dark:bg-slate-800 mb-12"></div>
+            <div class="flex flex-col gap-16">
+                <section class="scroll-mt-24" id="about">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="p-2 bg-primary/10 rounded-lg text-primary">
+                            <span class="material-symbols-outlined">info</span>
+                        </div>
+                        <h2 class="text-2xl font-bold text-text-main dark:text-white">About FindIt</h2>
+                    </div>
+                    <div class="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 leading-8">
+                        <p class="mb-6">
+                            FindIt is a community-driven platform dedicated to reuniting people with their lost belongings. Founded in 2023, our mission is to simplify the lost and found process through modern technology and a network of helpful individuals.
+                        </p>
+                        <p class="mb-6">
+                            We believe that most people want to do the right thing when they find something that doesn't belong to them. Our platform provides the bridge between the finder and the owner, ensuring a secure and efficient way to communicate and arrange for the return of items.
+                        </p>
+                        <div class="grid md:grid-cols-2 gap-6 my-8">
+                            <div class="p-6 rounded-2xl bg-surface-light dark:bg-surface-dark border border-slate-100 dark:border-slate-800 shadow-sm">
+                                <div class="text-3xl font-black text-primary mb-2">15k+</div>
+                                <div class="text-sm font-semibold text-text-main dark:text-white uppercase tracking-wide">Items Returned</div>
+                                <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">Successfully reunited with their owners across the globe.</p>
+                            </div>
+                            <div class="p-6 rounded-2xl bg-surface-light dark:bg-surface-dark border border-slate-100 dark:border-slate-800 shadow-sm">
+                                <div class="text-3xl font-black text-primary mb-2">98%</div>
+                                <div class="text-sm font-semibold text-text-main dark:text-white uppercase tracking-wide">Success Rate</div>
+                                <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">Of verified claims result in a successful handover.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="scroll-mt-24" id="privacy">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="p-2 bg-purple-500/10 rounded-lg text-purple-600 dark:text-purple-400">
+                            <span class="material-symbols-outlined">shield</span>
+                        </div>
+                        <h2 class="text-2xl font-bold text-text-main dark:text-white">Privacy Policy</h2>
+                    </div>
+                    <div class="space-y-6 text-slate-600 dark:text-slate-300 leading-8">
+                        <p>
+                            Your privacy is critically important to us. At FindIt, we have a few fundamental principles:
+                        </p>
+                        <ul class="list-disc pl-5 space-y-2 marker:text-primary">
+                            <li>We don't ask you for personal information unless we truly need it.</li>
+                            <li>We don't share your personal information with anyone except to comply with the law, develop our products, or protect our rights.</li>
+                            <li>We don't store personal information on our servers unless required for the on-going operation of one of our services.</li>
+                        </ul>
+                        <h3 class="text-lg font-bold text-text-main dark:text-white mt-8 mb-2">Data We Collect</h3>
+                        <p>
+                            When you register for an account, we may ask for your contact information, including items such as name, company name, address, email address, and telephone number. If you list an item as lost or found, we collect the details of that item including location data to help facilitate the search.
+                        </p>
+                        <div class="p-4 bg-yellow-50 dark:bg-yellow-900/10 border-l-4 border-yellow-400 rounded-r-lg">
+                            <p class="text-sm text-yellow-800 dark:text-yellow-200">
+                                <strong>Note:</strong> We never publicly display your exact home address. Location data is generalized for safety.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+                <section class="scroll-mt-24" id="terms">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="p-2 bg-emerald-500/10 rounded-lg text-emerald-600 dark:text-emerald-400">
+                            <span class="material-symbols-outlined">description</span>
+                        </div>
+                        <h2 class="text-2xl font-bold text-text-main dark:text-white">Terms of Service</h2>
+                    </div>
+                    <div class="space-y-6 text-slate-600 dark:text-slate-300 leading-8">
+                        <p>
+                            By accessing or using the FindIt website, you agree to be bound by these terms of service, all applicable laws and regulations, and agree that you are responsible for compliance with any applicable local laws.
+                        </p>
+                        <h3 class="text-lg font-bold text-text-main dark:text-white mt-8 mb-2">Use License</h3>
+                        <p>
+                            Permission is granted to temporarily download one copy of the materials (information or software) on FindIt's website for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title.
+                        </p>
+                        <h3 class="text-lg font-bold text-text-main dark:text-white mt-8 mb-2">Prohibited Activities</h3>
+                        <p>
+                            You may not use the service to post false claims, harass other users, or attempt to scam individuals looking for their lost property. Violation of these terms will result in immediate account termination.
+                        </p>
+                    </div>
+                </section>
+                <section class="scroll-mt-24" id="cookies">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="p-2 bg-orange-500/10 rounded-lg text-orange-600 dark:text-orange-400">
+                            <span class="material-symbols-outlined">cookie</span>
+                        </div>
+                        <h2 class="text-2xl font-bold text-text-main dark:text-white">Cookie Policy</h2>
+                    </div>
+                    <div class="space-y-6 text-slate-600 dark:text-slate-300 leading-8">
+                        <p>
+                            FindIt uses cookies to help FindIt identify and track visitors, their usage of the FindIt website, and their website access preferences.
+                        </p>
+                        <p>
+                            Visitors who do not wish to have cookies placed on their computers should set their browsers to refuse cookies before using FindIt's websites, with the drawback that certain features of FindIt's websites may not function properly without the aid of cookies.
+                        </p>
+                    </div>
+                </section>
+            </div>
+            <div class="mt-20 pt-10 border-t border-slate-200 dark:border-slate-800">
+                <p class="text-slate-400 text-sm">Last updated: October 24, 2023</p>
+            </div>
+        </div>
+    </div>
+</main>
+</div>
+<footer class="bg-surface-light dark:bg-surface-dark border-t border-slate-200 dark:border-slate-800 py-10 px-6">
+    <div class="max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="flex items-center gap-2 text-text-main dark:text-white">
+            <span class="material-symbols-outlined text-primary">search</span>
+            <span class="font-bold text-lg">FindIt</span>
+        </div>
+        <p class="text-slate-500 dark:text-slate-400 text-sm">© 2023 FindIt Inc. All rights reserved.</p>
+        <div class="flex gap-6">
+            <a class="text-slate-400 hover:text-primary transition-colors" href="#"><span class="sr-only">Twitter</span><svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-12.7 15.8-2.6-1.2-4.1-3.2-4.1-3.2s1.7.5 3.6-.2c-3.6-1.6-3.3-5.4-3.3-5.4s.8.4 1.8.1c-3.6-2-2.7-5.5-2.7-5.5s1 .7 2.6.2c-2.7-2.9-.4-7.5-.4-7.5s2.1 2.5 5.7 3.3c-.6-4.6 5.8-6.3 7.8-3.1 1 .2 2.1-.2 2.1-.2s-.2 1.1-1 2c1-.1 1.9-.3 1.9-.3z"></path></svg></a>
+            <a class="text-slate-400 hover:text-primary transition-colors" href="#"><span class="sr-only">GitHub</span><svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path></svg></a>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

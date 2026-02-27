@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>FindIt - User Registration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1754cf",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#111621",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1a2233",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="min-h-screen bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 flex flex-col">
+<%- include("../partials/navbar-auth", { activePage: "signup" }) %>
+<main class="flex-1 flex items-center justify-center p-4 sm:p-8">
+    <div class="w-full max-w-[480px] bg-surface-light dark:bg-surface-dark rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 p-6 sm:p-10 flex flex-col gap-8">
+        <div class="text-center space-y-2">
+            <h1 class="text-3xl font-black tracking-tight text-slate-900 dark:text-slate-100">Join FindIt</h1>
+            <p class="text-slate-500 dark:text-slate-400 text-base">Create your account to start reporting or finding items.</p>
+        </div>
+        <% if (typeof authError !== "undefined" && authError) { %>
+        <div class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-900/20 dark:text-red-300">
+            <%= authError %>
+        </div>
+        <% } %>
+        <form action="/signup" method="POST" class="flex flex-col gap-5">
+            <div class="flex flex-col items-center gap-4">
+                <div class="relative group cursor-pointer">
+                    <div class="w-24 h-24 rounded-full bg-slate-100 dark:bg-slate-800 border-2 border-dashed border-slate-300 dark:border-slate-600 flex items-center justify-center overflow-hidden hover:border-primary transition-colors">
+                        <span class="material-symbols-outlined text-3xl text-slate-400 group-hover:text-primary transition-colors">add_a_photo</span>
+                        <img alt="" class="hidden w-full h-full object-cover" src=""/>
+                    </div>
+                    <div class="absolute bottom-0 right-0 bg-primary text-white rounded-full p-1.5 shadow-sm border-2 border-surface-light dark:border-surface-dark">
+                        <span class="material-symbols-outlined text-[16px] leading-none block">edit</span>
+                    </div>
+                </div>
+                <span class="text-sm font-medium text-slate-500 dark:text-slate-400">Upload Profile Picture</span>
+            </div>
+            <div class="space-y-1.5">
+                <label class="block text-sm font-bold text-slate-900 dark:text-slate-100" for="fullname">Full Name</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <span class="material-symbols-outlined text-slate-400 text-[20px]">person</span>
+                    </div>
+                    <input class="block w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:border-primary focus:ring-primary pl-10 h-12 sm:text-sm" id="fullname" name="fullname" placeholder="e.g. Jane Doe" type="text" required/>
+                </div>
+            </div>
+            <div class="space-y-1.5">
+                <label class="block text-sm font-bold text-slate-900 dark:text-slate-100" for="email">Email Address</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <span class="material-symbols-outlined text-slate-400 text-[20px]">mail</span>
+                    </div>
+                    <input class="block w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:border-primary focus:ring-primary pl-10 h-12 sm:text-sm" id="email" name="email" placeholder="you@example.com" type="email" required/>
+                </div>
+            </div>
+            <div class="space-y-1.5">
+                <label class="block text-sm font-bold text-slate-900 dark:text-slate-100" for="password">Password</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <span class="material-symbols-outlined text-slate-400 text-[20px]">lock</span>
+                    </div>
+                    <input class="block w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:border-primary focus:ring-primary pl-10 h-12 sm:text-sm" id="password" name="password" placeholder="••••••••" type="password" required/>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Must be at least 8 characters long.</p>
+            </div>
+            <div class="flex items-start gap-3 mt-2">
+                <div class="flex h-6 items-center">
+                    <input class="h-4 w-4 rounded border-slate-300 dark:border-slate-600 text-primary focus:ring-primary bg-slate-50 dark:bg-slate-900" id="terms" name="terms" type="checkbox" required/>
+                </div>
+                <div class="text-sm leading-6">
+                    <label class="font-medium text-slate-700 dark:text-slate-300" for="terms">
+                        I agree to the <a class="font-bold text-primary hover:text-blue-700 dark:hover:text-blue-400" href="/terms">Terms of Service</a> and <a class="font-bold text-primary hover:text-blue-700 dark:hover:text-blue-400" href="/privacy">Privacy Policy</a>.
+                    </label>
+                </div>
+            </div>
+            <button class="mt-4 flex w-full items-center justify-center rounded-xl bg-primary px-8 py-3.5 text-sm font-bold text-white shadow-sm hover:bg-blue-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary transition-all" type="submit">
+                Create Account
+            </button>
+        </form>
+        <div class="relative">
+            <div aria-hidden="true" class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-slate-200 dark:border-slate-700"></div>
+            </div>
+            <div class="relative flex justify-center">
+                <span class="bg-surface-light dark:bg-surface-dark px-2 text-sm text-slate-500 dark:text-slate-400">Or continue with</span>
+            </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <button class="flex items-center justify-center gap-3 rounded-xl bg-slate-50 dark:bg-slate-800 px-4 py-3 text-sm font-semibold text-slate-900 dark:text-white ring-1 ring-inset ring-slate-300 dark:ring-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 focus:outline-offset-0 transition-colors">
+                <svg aria-hidden="true" class="h-5 w-5" viewbox="0 0 24 24">
+                    <path d="M12.0003 20.45c4.6667 0 8.45-3.7833 8.45-8.45 0-4.6667-3.7833-8.45-8.45-8.45-4.6667 0-8.45 3.7833-8.45 8.45 0 4.6667 3.7833 8.45 8.45 8.45Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+                    <path d="M15.5 12c0-.5-.1-1-.3-1.4-.2-.4-.6-.8-1-1-.4-.3-.9-.4-1.4-.4h-1.6c-.5 0-1 .1-1.4.3-.4.2-.8.6-1 1-.3.4-.4.9-.4 1.4v1.6c0 .5.1 1 .3 1.4.2.4.6.8 1 1 .4.3.9.4 1.4.4h1.6c.5 0 1-.1 1.4-.3.4-.2.8-.6 1-1 .3-.4.4-.9.4-1.4v-1.6Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+                </svg>
+                <span class="text-sm font-bold">Google</span>
+            </button>
+            <button class="flex items-center justify-center gap-3 rounded-xl bg-slate-50 dark:bg-slate-800 px-4 py-3 text-sm font-semibold text-slate-900 dark:text-white ring-1 ring-inset ring-slate-300 dark:ring-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 focus:outline-offset-0 transition-colors">
+                <svg aria-hidden="true" class="h-5 w-5 text-[#1877F2]" fill="currentColor" viewbox="0 0 24 24">
+                    <path clip-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" fill-rule="evenodd"></path>
+                </svg>
+                <span class="text-sm font-bold">Facebook</span>
+            </button>
+        </div>
+    </div>
+</main>
+<footer class="w-full py-6 text-center">
+    <p class="text-sm text-slate-500 dark:text-slate-400">
+        © 2024 FindIt Inc. All rights reserved.
+    </p>
+</footer>
+</body>
+</html>

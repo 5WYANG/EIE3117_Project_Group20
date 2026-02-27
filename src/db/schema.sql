@@ -1,0 +1,70 @@
+CREATE DATABASE IF NOT EXISTS findit
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
+USE findit;
+
+CREATE TABLE IF NOT EXISTS users (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(120) NOT NULL,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  avatar_url TEXT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS notices (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  user_id INT UNSIGNED NOT NULL,
+  type ENUM('lost', 'found') NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  description TEXT NOT NULL,
+  category VARCHAR(100) NOT NULL,
+  subcategory VARCHAR(100) NULL,
+  location_text VARCHAR(255) NOT NULL,
+  occurred_at DATE NOT NULL,
+  reward_amount DECIMAL(10,2) NOT NULL DEFAULT 0,
+  status VARCHAR(30) NOT NULL DEFAULT 'active',
+  view_count INT UNSIGNED NOT NULL DEFAULT 0,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_notices_user
+    FOREIGN KEY (user_id) REFERENCES users(id)
+    ON DELETE RESTRICT
+    ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS notice_images (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  notice_id INT UNSIGNED NOT NULL,
+  image_url TEXT NOT NULL,
+  sort_order INT UNSIGNED NOT NULL DEFAULT 1,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_notice_images_notice
+    FOREIGN KEY (notice_id) REFERENCES notices(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS responses (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  notice_id INT UNSIGNED NOT NULL,
+  user_id INT UNSIGNED NULL,
+  message TEXT NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_responses_notice
+    FOREIGN KEY (notice_id) REFERENCES notices(id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT fk_responses_user
+    FOREIGN KEY (user_id) REFERENCES users(id)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE INDEX idx_notices_user_id ON notices(user_id);
+CREATE INDEX idx_notices_created_at ON notices(created_at);
+CREATE INDEX idx_notices_type_status ON notices(type, status);
+CREATE INDEX idx_notice_images_notice_order ON notice_images(notice_id, sort_order);
+CREATE INDEX idx_responses_notice_created ON responses(notice_id, created_at);

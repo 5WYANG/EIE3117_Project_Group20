@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Post a New Notice - FindIt</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#1754cf",
+              "background-light": "#f6f6f8",
+              "background-dark": "#111621"
+            },
+            fontFamily: {
+              display: ["Manrope", "sans-serif"]
+            },
+            borderRadius: {
+              DEFAULT: "0.5rem",
+              lg: "1rem",
+              xl: "1.5rem",
+              full: "9999px"
+            }
+          }
+        }
+      };
+    </script>
+    <style>
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #d1d5db;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #9ca3af;
+      }
+    </style>
+  </head>
+  <body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased min-h-screen flex flex-col">
+    <%- include("../partials/navbar-main", { activePage: "post-notice", showCta: true }) %>
+    <main class="flex-1 w-full max-w-5xl mx-auto p-4 sm:p-6 lg:p-10">
+      <div class="mb-10 text-center max-w-2xl mx-auto">
+        <h1 class="text-3xl sm:text-4xl font-black tracking-tight text-slate-900 dark:text-white mb-3">Create a New Notice</h1>
+        <p class="text-lg text-slate-500 dark:text-slate-400">Help others find their lost items or reunite with yours. Fill out the details below to get started.</p>
+      </div>
+      <form action="/notices" method="POST" enctype="multipart/form-data">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div class="lg:col-span-5 flex flex-col gap-6">
+          <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#1a202e] p-6 shadow-sm">
+            <h3 class="text-lg font-bold mb-4 text-slate-900 dark:text-white">Photos</h3>
+            <div class="group relative flex flex-col items-center justify-center gap-4 rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900/50 px-6 py-12 transition-colors hover:border-primary hover:bg-primary/5">
+              <div class="rounded-full bg-white dark:bg-slate-800 p-4 shadow-sm ring-1 ring-slate-900/5">
+                <span class="material-symbols-outlined text-3xl text-primary">add_a_photo</span>
+              </div>
+              <div class="text-center">
+                <p class="text-sm font-bold text-slate-900 dark:text-white">Click to upload</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">SVG, PNG, JPG or GIF (max. 800x400px)</p>
+              </div>
+              <input class="absolute inset-0 cursor-pointer opacity-0" type="file" name="images" multiple accept="image/*" />
+            </div>
+            <div id="image-preview-grid" class="mt-4 grid grid-cols-4 gap-2">
+              <div class="aspect-square rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700"></div>
+              <div class="aspect-square rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700"></div>
+              <div class="aspect-square rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700"></div>
+              <div class="aspect-square rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700"></div>
+            </div>
+            <script>
+              document.querySelector('input[name="images"]').addEventListener('change', function () {
+                const grid = document.getElementById('image-preview-grid');
+                grid.innerHTML = '';
+                const files = Array.from(this.files).slice(0, 4);
+                files.forEach(function (file) {
+                  const reader = new FileReader();
+                  reader.onload = function (e) {
+                    const div = document.createElement('div');
+                    div.className = 'aspect-square rounded-lg overflow-hidden border border-primary';
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'w-full h-full object-cover';
+                    div.appendChild(img);
+                    grid.appendChild(div);
+                  };
+                  reader.readAsDataURL(file);
+                });
+                for (let i = files.length; i < 4; i++) {
+                  const div = document.createElement('div');
+                  div.className = 'aspect-square rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700';
+                  grid.appendChild(div);
+                }
+              });
+            </script>
+          </div>
+          <div class="rounded-2xl bg-primary/5 p-6 border border-primary/10">
+            <div class="flex items-start gap-3">
+              <span class="material-symbols-outlined text-primary mt-0.5">info</span>
+              <div>
+                <h4 class="text-sm font-bold text-slate-900 dark:text-white">Photo Tips</h4>
+                <p class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-relaxed">
+                  clear photos increase the chances of recovery by 40%. Make sure lighting is good and show any distinguishing marks or scratches.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="lg:col-span-7">
+          <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#1a202e] p-6 sm:p-8 shadow-sm flex flex-col gap-6">
+            <div>
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Notice Type</label>
+              <div class="flex w-full rounded-xl bg-slate-100 dark:bg-slate-800 p-1">
+                <label class="group relative flex flex-1 cursor-pointer items-center justify-center rounded-lg py-2.5 text-sm font-medium transition-all has-[:checked]:bg-white dark:has-[:checked]:bg-slate-700 has-[:checked]:shadow-sm has-[:checked]:text-primary">
+                  <input checked class="sr-only" name="type" type="radio" value="lost" />
+                  <span class="z-10 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]">search_off</span>
+                    Lost Item
+                  </span>
+                </label>
+                <label class="group relative flex flex-1 cursor-pointer items-center justify-center rounded-lg py-2.5 text-sm font-medium text-slate-500 transition-all has-[:checked]:bg-white dark:has-[:checked]:bg-slate-700 has-[:checked]:shadow-sm has-[:checked]:text-primary hover:text-slate-700 dark:hover:text-slate-200">
+                  <input class="sr-only" name="type" type="radio" value="found" />
+                  <span class="z-10 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]">check_circle</span>
+                    Found Item
+                  </span>
+                </label>
+              </div>
+            </div>
+            <div class="space-y-2">
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300" for="title">Title</label>
+              <input
+                class="w-full rounded-xl border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium placeholder-slate-400 focus:border-primary focus:bg-white focus:ring-0 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:placeholder-slate-500"
+                id="title"
+                name="title"
+                placeholder="e.g. Blue iPhone 13 with clear case"
+                type="text"
+                required
+              />
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300" for="category">Category</label>
+                <div class="relative">
+                  <select
+                    class="w-full appearance-none rounded-xl border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700 focus:border-primary focus:bg-white focus:ring-0 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+                    id="category"
+                    name="category"
+                    required
+                  >
+                    <option>Electronics</option>
+                    <option>Pets</option>
+                    <option>Clothing</option>
+                    <option>Documents</option>
+                    <option>Keys</option>
+                    <option>Other</option>
+                  </select>
+                  <span class="material-symbols-outlined absolute right-4 top-3.5 pointer-events-none text-slate-400">expand_more</span>
+                </div>
+              </div>
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300" for="date">Date</label>
+                <div class="relative">
+                  <input
+                    class="w-full rounded-xl border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700 placeholder-slate-400 focus:border-primary focus:bg-white focus:ring-0 dark:border-slate-700 dark:bg-slate-900 dark:text-white [&::-webkit-calendar-picker-indicator]:opacity-0"
+                    id="date"
+                    name="date"
+                    type="date"
+                    required
+                  />
+                  <span class="material-symbols-outlined absolute right-4 top-3.5 pointer-events-none text-slate-400">calendar_today</span>
+                </div>
+              </div>
+            </div>
+            <div class="space-y-2">
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300" for="location">Location</label>
+              <div class="relative group">
+                <div class="absolute left-4 top-3.5 flex items-center text-slate-400 group-focus-within:text-primary transition-colors">
+                  <span class="material-symbols-outlined">location_on</span>
+                </div>
+                <input
+                  class="w-full rounded-xl border-slate-200 bg-slate-50 pl-12 pr-4 py-3 text-sm font-medium placeholder-slate-400 focus:border-primary focus:bg-white focus:ring-0 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:placeholder-slate-500"
+                  id="location"
+                  name="location"
+                  placeholder="e.g. Central Park, near the fountain"
+                  type="text"
+                  required
+                />
+                <div
+                  class="mt-2 h-32 w-full overflow-hidden rounded-xl bg-slate-200 bg-cover bg-center"
+                  style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAmdjcVwRRBdfyrb5T4JfA1V8hyHzxq0y71Jr2lhaSO7GyJg5SnCg0Ze52Xz6ieTf3QSgFbv-JJctgy_Ynizt0zwJTWTWsfy5do7g5abQDWw9ooNHOz0uJGRWXSNNiF8fNVlKXAlk4Q0pq2eWAXbCXryfJLonavQJl7DxavudRx0LEqDuDZs5Z8bQUuPnUDOA_RLod2I7Libx8bEQ0c0lSxw3vMyTdFABiZA30E-_2wjFXG7skCl0AW6h9fpBGqP2ZBrMrx6uE33nb1');"
+                ></div>
+              </div>
+            </div>
+            <div class="space-y-2">
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300" for="description">Description</label>
+              <textarea
+                class="w-full resize-none rounded-xl border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium placeholder-slate-400 focus:border-primary focus:bg-white focus:ring-0 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:placeholder-slate-500"
+                id="description"
+                name="description"
+                placeholder="Describe the item in detail. Mention scratches, unique marks, color variations..."
+                rows="4"
+                required
+              ></textarea>
+            </div>
+            <div class="flex items-center gap-3 py-2">
+              <input class="size-5 rounded border-slate-300 text-primary focus:ring-primary dark:border-slate-600 dark:bg-slate-800" id="email-alert" type="checkbox" />
+              <label class="text-sm font-medium text-slate-700 dark:text-slate-300 cursor-pointer select-none" for="email-alert">
+                Receive email notifications when potential matches are found
+              </label>
+            </div>
+            <div class="pt-4 flex items-center justify-end gap-4 border-t border-slate-100 dark:border-slate-800 mt-2">
+              <a class="px-6 py-2.5 text-sm font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors" href="/listings">
+                Cancel
+              </a>
+              <button
+                class="flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3 text-sm font-bold text-white shadow-lg shadow-primary/25 hover:bg-blue-700 hover:shadow-primary/40 transition-all active:scale-95"
+                type="submit"
+              >
+                <span>Publish Notice</span>
+                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      </form>
+    </main>
+    <footer class="mt-12 py-8 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-[#111621]">
+      <div class="max-w-5xl mx-auto px-6 lg:px-10 flex flex-col md:flex-row justify-between items-center gap-4">
+        <p class="text-sm font-medium text-slate-500 dark:text-slate-400">© 2023 FindIt Inc. All rights reserved.</p>
+        <div class="flex gap-6">
+          <a class="text-sm font-medium text-slate-500 hover:text-primary dark:text-slate-400 transition-colors" href="/privacy">Privacy</a>
+          <a class="text-sm font-medium text-slate-500 hover:text-primary dark:text-slate-400 transition-colors" href="/terms">Terms</a>
+          <a class="text-sm font-medium text-slate-500 hover:text-primary dark:text-slate-400 transition-colors" href="/contact">Support</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
