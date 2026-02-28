@@ -10,42 +10,80 @@
     <div class="flex items-center gap-4 sm:gap-6">
       <nav class="hidden md:flex items-center gap-6">
         <a
-          class="<%= activePage === 'listings' ? 'text-primary font-bold' : 'text-slate-600 dark:text-slate-400 hover:text-primary' %> text-sm transition-colors"
+          class=""
+          <%= activePage === 'listings' ? 'text-primary font-bold' : 'text-slate-600 dark:text-slate-400 hover:text-primary' %> text-sm transition-colors"
           href="/listings"
-        >Home</a>
+          >Home
+        </a>
         <a
-          class="<%= activePage === 'help' ? 'text-primary font-bold' : 'text-slate-600 dark:text-slate-400 hover:text-primary' %> text-sm transition-colors"
+          class=""
+          <%= activePage === 'help' ? 'text-primary font-bold' : 'text-slate-600 dark:text-slate-400 hover:text-primary' %> text-sm transition-colors"
           href="/help"
-        >Help</a>
+          >Help
+        </a>
         <a
-          class="<%= activePage === 'about' ? 'text-primary font-bold' : 'text-slate-600 dark:text-slate-400 hover:text-primary' %> text-sm transition-colors"
+          class=""
+          <%= activePage === 'about' ? 'text-primary font-bold' : 'text-slate-600 dark:text-slate-400 hover:text-primary' %> text-sm transition-colors"
           href="/about"
-        >About</a>
+          >About
+        </a>
       </nav>
 
       <% if (currentUser) { %>
+        <!-- Avatar upload + clickable name -->
+      <form action="/profile/avatar" method="POST" enctype="multipart/form-data" class="flex items-center gap-3">
+        <label class="cursor-pointer group">
+          <% if (currentUser.avatar_url) { %>
+             <img
+  src=""<%= (currentUser.avatar_url.startsWith('/') ? currentUser.avatar_url : '/' + currentUser.avatar_url) %>?t=<%= Date.now() %>"
+          alt="avatar"
+          class="h-9 w-9 rounded-full object-cover border border-slate-200 dark:border-slate-700 group-hover:ring-2 group-hover:ring-primary"
+          />
+          <% } else { %>
+              <div class="h-9 w-9 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-300 flex items-center justify-center border border-slate-300 dark:border-slate-600 group-hover:ring-2 group-hover:ring-primary">
+            <span class="text-sm font-bold">?</span>
+          </div>
+          <% } %>
+            <input
+            type="file"
+            name="avatar"
+            accept="image/*"
+            class="hidden"
+            onchange="this.form.submit()"
+            />
+        </label>
+
+        <a
+          href="/profile"
+          class="text-sm font-semibold text-slate-700 dark:text-slate-300 hover:text-primary transition-colors hidden sm:block"
+          >
+          <%= currentUser.name %>
+        </a>
+      </form>
+
       <a
         href="/my-notices"
         class="text-sm font-semibold text-slate-700 dark:text-slate-300 hover:text-primary transition-colors"
-      >Back to My Notices</a>
+        >Back to My Notices</a>
+
       <form action="/logout" method="POST">
         <button
           type="submit"
           class="px-4 py-2 text-sm font-bold text-white bg-primary hover:bg-blue-700 rounded-lg transition-colors"
-        >Log Out</button>
+          >Log Out</button>
       </form>
       <% } else if (activePage !== 'login') { %>
-      <a
+        <a
         href="/login"
         class="text-sm font-semibold text-slate-700 dark:text-slate-300 hover:text-primary transition-colors"
-      >Log In</a>
+        >Log In</a>
       <% } %>
 
       <% if (!currentUser && activePage !== 'signup') { %>
       <a
         href="/signup"
         class="px-4 py-2 text-sm font-bold text-white bg-primary hover:bg-blue-700 rounded-lg transition-colors"
-      >Sign Up</a>
+        >Sign Up</a>
       <% } %>
     </div>
   </div>

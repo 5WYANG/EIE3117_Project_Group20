@@ -128,16 +128,23 @@
                 <% }) %>
               </div>
               <div class="p-4 bg-white dark:bg-neutral-800 border-t border-neutral-100 dark:border-neutral-700">
-                <div class="relative">
+                <% if (responseError) { %>
+                  <div class="mb-3 text-sm text-red-600 bg-red-50 border border-red-200 px-3 py-2 rounded-lg">
+                    <%= responseError %>
+                  </div>
+                <% } %>
+                <form class="relative" method="POST" action="/items/<%= notice.id %>/responses">
                   <textarea
+                    name="message"
                     class="w-full pl-4 pr-12 py-3 bg-neutral-100 dark:bg-neutral-900 rounded-xl resize-none focus:ring-2 focus:ring-primary/50 focus:bg-white dark:focus:bg-black transition-all border-none placeholder-neutral-400 text-sm"
                     placeholder="Send a message..."
                     rows="1"
+                    required
                   ></textarea>
-                  <button class="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors">
+                  <button type="submit" class="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors">
                     <span class="material-symbols-outlined text-[20px] fill-1">send</span>
                   </button>
-                </div>
+                </form>
                 <p class="text-xs text-neutral-400 mt-2 flex items-center gap-1">
                   <span class="material-symbols-outlined text-[14px]">lock</span>
                   Your message will be private until the owner replies.
@@ -151,8 +158,11 @@
             <div class="flex items-center justify-between mb-6 pb-6 border-b border-neutral-100 dark:border-neutral-700">
               <div>
                 <p class="text-sm font-medium text-neutral-500 mb-1">Status</p>
-                <div class="inline-flex items-center gap-1.5 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 px-3 py-1 rounded-full text-sm font-bold">
-                  <span class="size-2 rounded-full bg-red-500 animate-pulse"></span>
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-bold
+                  <%= notice.type === 'lost'
+                    ? 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400'
+                    : 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400' %>">
+                  <span class="size-2 rounded-full <%= notice.type === 'lost' ? 'bg-red-500' : 'bg-green-500' %> animate-pulse"></span>
                   <%= notice.type === "lost" ? "Lost" : "Found" %>
                 </div>
               </div>

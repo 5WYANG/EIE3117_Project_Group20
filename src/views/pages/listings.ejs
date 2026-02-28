@@ -83,29 +83,40 @@
           </p>
         </div>
         <div class="flex flex-wrap items-center gap-3">
-          <button
-            class="px-4 py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-medium rounded-xl shadow-md hover:opacity-90 transition-opacity"
+          <a
+            href="/listings?filter=all"
+            class="px-4 py-2 text-sm font-medium rounded-xl shadow-md transition-opacity <%= activeFilter === 'all' ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900' : 'bg-white dark:bg-surface-dark text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800' %>"
           >
             All Items
-          </button>
-          <button
-            class="px-4 py-2 bg-white dark:bg-surface-dark text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+          </a>
+          <a
+            href="/listings?filter=lost"
+            class="px-4 py-2 text-sm font-medium rounded-xl transition-colors <%= activeFilter === 'lost' ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-md' : 'bg-white dark:bg-surface-dark text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800' %>"
           >
             Lost
-          </button>
-          <button
-            class="px-4 py-2 bg-white dark:bg-surface-dark text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+          </a>
+          <a
+            href="/listings?filter=found"
+            class="px-4 py-2 text-sm font-medium rounded-xl transition-colors <%= activeFilter === 'found' ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-md' : 'bg-white dark:bg-surface-dark text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800' %>"
           >
             Found
-          </button>
-          <button
-            class="px-4 py-2 bg-white dark:bg-surface-dark text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-sm font-medium rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center gap-2"
+          </a>
+          <a
+            href="/listings?filter=near"
+            class="px-4 py-2 text-sm font-medium rounded-xl transition-colors flex items-center gap-2 <%= activeFilter === 'near' ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-md' : 'bg-white dark:bg-surface-dark text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800' %>"
           >
             <span class="material-symbols-outlined text-[18px]">near_me</span>
             Near Me
-          </button>
+          </a>
         </div>
       </div>
+
+      <% if (!notices || notices.length === 0) { %>
+        <div class="bg-white dark:bg-surface-dark rounded-2xl p-6 border border-slate-100 dark:border-slate-800 text-slate-500">
+          No active listings found.
+        </div>
+      <% } %>
+
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         <% notices.forEach((notice) => { %>
         <div
@@ -162,41 +173,35 @@
         </div>
         <% }) %>
       </div>
+
+      <% if (totalPages > 1) { %>
       <div class="mt-12 flex justify-center pb-8">
         <div class="flex items-center gap-2">
-          <button
-            class="p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-50"
+          <a
+            href="/listings?filter=<%= activeFilter %>&page=<%= Math.max(1, currentPage - 1) %>"
+            class="p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 <%= currentPage === 1 ? 'pointer-events-none opacity-50' : '' %>"
           >
             <span class="material-symbols-outlined">chevron_left</span>
-          </button>
-          <button
-            class="size-10 flex items-center justify-center rounded-xl bg-primary text-white text-sm font-bold shadow-md shadow-primary/20"
-          >
-            1
-          </button>
-          <button
-            class="size-10 flex items-center justify-center rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium transition-colors"
-          >
-            2
-          </button>
-          <button
-            class="size-10 flex items-center justify-center rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium transition-colors"
-          >
-            3
-          </button>
-          <span class="text-slate-400 px-2">...</span>
-          <button
-            class="size-10 flex items-center justify-center rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-medium transition-colors"
-          >
-            12
-          </button>
-          <button
-            class="p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+          </a>
+
+          <% for (let p = 1; p <= totalPages; p++) { %>
+            <a
+              href="/listings?filter=<%= activeFilter %>&page=<%= p %>"
+              class="size-10 flex items-center justify-center rounded-xl text-sm font-medium transition-colors <%= p === currentPage ? 'bg-primary text-white font-bold shadow-md shadow-primary/20' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800' %>"
+            >
+              <%= p %>
+            </a>
+          <% } %>
+
+          <a
+            href="/listings?filter=<%= activeFilter %>&page=<%= Math.min(totalPages, currentPage + 1) %>"
+            class="p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 <%= currentPage === totalPages ? 'pointer-events-none opacity-50' : '' %>"
           >
             <span class="material-symbols-outlined">chevron_right</span>
-          </button>
+          </a>
         </div>
       </div>
+      <% } %>
     </main>
   </body>
 </html>

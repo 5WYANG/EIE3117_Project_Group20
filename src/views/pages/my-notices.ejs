@@ -42,19 +42,44 @@
       <%- include("../partials/navbar-main", { activePage: "my-notices", showCta: true }) %>
       <main class="flex-1 flex justify-center py-8 px-4 sm:px-8">
         <div class="w-full max-w-[1024px] flex flex-col gap-8">
-          <div class="flex flex-col gap-2">
-            <h1 class="text-slate-900 dark:text-white text-3xl md:text-4xl font-extrabold tracking-tight">My Notices</h1>
-            <p class="text-slate-500 dark:text-slate-400 text-lg">Manage and track your lost and found contributions.</p>
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div class="flex flex-col gap-2">
+              <h1 class="text-slate-900 dark:text-white text-3xl md:text-4xl font-extrabold tracking-tight">My Notices</h1>
+              <p class="text-slate-500 dark:text-slate-400 text-lg">Manage and track your lost and found contributions.</p>
+            </div>
+            <a
+              href="/notices/new"
+              class="flex items-center gap-2 px-5 py-3 text-sm font-bold text-white bg-primary hover:bg-blue-700 rounded-xl shadow-sm transition-all hover:shadow-md"
+            >
+              <span class="material-symbols-outlined text-xl">add_circle</span>
+              Post New Notice
+            </a>
           </div>
+
           <div class="border-b border-slate-200 dark:border-slate-800">
             <div class="flex gap-8">
-              <button class="relative pb-4 text-primary font-bold text-sm tracking-wide border-b-2 border-primary">My Posts</button>
-              <button class="relative pb-4 text-slate-500 dark:text-slate-400 font-medium text-sm tracking-wide hover:text-slate-800 dark:hover:text-slate-200 transition-colors">
+              <a
+                href="/my-notices?tab=posts"
+                class="relative pb-4 text-sm tracking-wide <%= activeTab === 'posts' ? 'text-primary font-bold border-b-2 border-primary' : 'text-slate-500 dark:text-slate-400 font-medium hover:text-slate-800 dark:hover:text-slate-200' %>"
+              >
+                My Posts
+              </a>
+              <a
+                href="/my-notices?tab=participations"
+                class="relative pb-4 text-sm tracking-wide <%= activeTab === 'participations' ? 'text-primary font-bold border-b-2 border-primary' : 'text-slate-500 dark:text-slate-400 font-medium hover:text-slate-800 dark:hover:text-slate-200' %>"
+              >
                 My Participations
-              </button>
+              </a>
             </div>
           </div>
+
+          <% if (activeTab === 'posts') { %>
           <div class="flex flex-col gap-6">
+            <% if (!notices || notices.length === 0) { %>
+              <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 text-slate-500">
+                You haven't posted any notices yet.
+              </div>
+            <% } %>
             <% notices.forEach((notice) => { %>
             <div class="group bg-white dark:bg-slate-900 rounded-2xl p-4 shadow-sm border border-slate-200 dark:border-slate-800 hover:shadow-md transition-all duration-300">
               <div class="flex flex-col md:flex-row gap-6">
@@ -98,7 +123,14 @@
                       </div>
                     </div>
                   </div>
-                  <div class="mt-6 flex justify-end">
+                  <div class="mt-6 flex justify-end gap-3">
+                    <a
+                      class="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-lg text-sm font-bold transition-colors"
+                      href="/notices/<%= notice.id %>/edit"
+                    >
+                      <span class="material-symbols-outlined text-lg">edit</span>
+                      Edit
+                    </a>
                     <a
                       class="flex items-center gap-2 bg-primary/10 hover:bg-primary/20 text-primary px-4 py-2.5 rounded-lg text-sm font-bold transition-colors"
                       href="/items/<%= notice.id %>"
@@ -112,6 +144,57 @@
             </div>
             <% }) %>
           </div>
+          <% } %>
+
+          <% if (activeTab === 'participations') { %>
+          <div class="flex flex-col gap-6">
+            <% if (!participations || participations.length === 0) { %>
+              <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 text-slate-500">
+                You haven't participated in any notices yet.
+              </div>
+            <% } %>
+
+            <% participations.forEach((p) => { %>
+            <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-sm">
+              <div class="flex items-start gap-4">
+                <div class="w-16 h-16 rounded-xl overflow-hidden bg-slate-100 shrink-0">
+                  <img class="w-full h-full object-cover" src="<%= p.image_url || 'https://via.placeholder.com/200x200?text=FindIt' %>" alt="Notice image">
+                </div>
+                <div class="flex-1">
+                  <div class="flex items-center justify-between gap-3">
+                    <div>
+                      <h3 class="text-slate-900 dark:text-white font-bold text-lg"><%= p.title %></h3>
+                      <div class="mt-1 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider">
+                        <span class="inline-flex size-2 rounded-full <%= p.status === 'active' ? 'bg-green-500' : 'bg-slate-400' %>"></span>
+                        <span class="<%= p.status === 'active' ? 'text-green-600 dark:text-green-400' : 'text-slate-500 dark:text-slate-400' %>">
+                          <%= p.status %>
+                        </span>
+                      </div>
+                    </div>
+                    <a
+                      class="flex items-center gap-2 bg-primary/10 hover:bg-primary/20 text-primary px-4 py-2 rounded-lg text-sm font-bold transition-colors"
+                      href="/items/<%= p.notice_id %>"
+                    >
+                      <span class="material-symbols-outlined text-lg">open_in_new</span>
+                      View Details
+                    </a>
+                  </div>
+
+                  <div class="mt-4 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl p-4">
+                    <p class="text-sm text-slate-700 dark:text-slate-200 leading-relaxed">
+                      <%= p.response_message %>
+                    </p>
+                    <p class="mt-2 text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
+                      <span class="material-symbols-outlined text-[14px]">schedule</span>
+                      <%= p.response_created_at %>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% }) %>
+          </div>
+          <% } %>
         </div>
       </main>
     </div>

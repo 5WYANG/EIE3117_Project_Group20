@@ -41,17 +41,18 @@
             <%= authError %>
         </div>
         <% } %>
-        <form action="/signup" method="POST" class="flex flex-col gap-5">
+        <form action="/signup" method="POST" enctype="multipart/form-data" class="flex flex-col gap-5">
             <div class="flex flex-col items-center gap-4">
-                <div class="relative group cursor-pointer">
+                <div class="relative group cursor-pointer" onclick="document.getElementById('avatar').click()">
                     <div class="w-24 h-24 rounded-full bg-slate-100 dark:bg-slate-800 border-2 border-dashed border-slate-300 dark:border-slate-600 flex items-center justify-center overflow-hidden hover:border-primary transition-colors">
-                        <span class="material-symbols-outlined text-3xl text-slate-400 group-hover:text-primary transition-colors">add_a_photo</span>
-                        <img alt="" class="hidden w-full h-full object-cover" src=""/>
+                        <span id="avatarIcon" class="material-symbols-outlined text-3xl text-slate-400 group-hover:text-primary transition-colors">add_a_photo</span>
+                        <img id="avatarPreview" alt="" class="hidden w-full h-full object-cover" src=""/>
                     </div>
                     <div class="absolute bottom-0 right-0 bg-primary text-white rounded-full p-1.5 shadow-sm border-2 border-surface-light dark:border-surface-dark">
                         <span class="material-symbols-outlined text-[16px] leading-none block">edit</span>
                     </div>
                 </div>
+                <input id="avatar" name="avatar" type="file" accept="image/*" class="hidden"/>
                 <span class="text-sm font-medium text-slate-500 dark:text-slate-400">Upload Profile Picture</span>
             </div>
             <div class="space-y-1.5">
@@ -126,5 +127,20 @@
         © 2024 FindIt Inc. All rights reserved.
     </p>
 </footer>
+
+<script>
+  const input = document.getElementById('avatar');
+  const preview = document.getElementById('avatarPreview');
+  const icon = document.getElementById('avatarIcon');
+
+  input.addEventListener('change', () => {
+    const file = input.files && input.files[0];
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    preview.src = url;
+    preview.classList.remove('hidden');
+    icon.classList.add('hidden');
+  });
+</script>
 </body>
 </html>

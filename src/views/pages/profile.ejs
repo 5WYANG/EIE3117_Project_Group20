@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>FindIt - Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#1754cf",
+            "background-light": "#f6f6f8",
+            "background-dark": "#111621",
+            "surface-light": "#ffffff",
+            "surface-dark": "#1a2233",
+          },
+          fontFamily: {
+            "display": ["Manrope", "sans-serif"]
+          },
+          borderRadius: { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px" },
+        },
+      },
+    }
+  </script>
+</head>
+<body class="min-h-screen bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 flex flex-col">
+<%- include("../partials/navbar-auth", { activePage: "profile" }) %>
+
+<main class="flex-1 flex items-center justify-center p-4 sm:p-8">
+  <div class="w-full max-w-2xl bg-surface-light dark:bg-surface-dark rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 p-6 sm:p-10 flex flex-col gap-8">
+    <div class="text-center space-y-2">
+      <h1 class="text-3xl font-black tracking-tight">My Profile</h1>
+      <p class="text-slate-500 dark:text-slate-400 text-base">Manage your account details.</p>
+    </div>
+
+    <% if (profileError) { %>
+      <div class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-800 dark:bg-red-900/20 dark:text-red-300">
+        <%= profileError %>
+      </div>
+    <% } %>
+    <% if (profileSuccess) { %>
+      <div class="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700 dark:border-green-800 dark:bg-green-900/20 dark:text-green-300">
+        <%= profileSuccess %>
+      </div>
+    <% } %>
+
+    <!-- Avatar -->
+    <div class="flex flex-col items-center gap-3">
+      <form action="/profile/avatar" method="POST" enctype="multipart/form-data" class="flex flex-col items-center gap-3">
+        <label class="cursor-pointer group">
+          <% if (currentUser && currentUser.avatar_url) { %>
+           <img
+  src="<%= (currentUser.avatar_url.startsWith('/') ? currentUser.avatar_url : '/' + currentUser.avatar_url) %>?t=<%= Date.now() %>"
+  alt="avatar"
+  class="h-24 w-24 rounded-full object-cover border border-slate-200 dark:border-slate-700 group-hover:ring-2 group-hover:ring-primary"
+/>
+          <% } else { %>
+            <div class="h-24 w-24 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-300 flex items-center justify-center border border-slate-300 dark:border-slate-600 group-hover:ring-2 group-hover:ring-primary">
+              <span class="text-xl font-bold">?</span>
+            </div>
+          <% } %>
+          <input type="file" name="avatar" accept="image/*" class="hidden" onchange="this.form.submit()"/>
+        </label>
+        <span class="text-sm text-slate-500 dark:text-slate-400">Click avatar to upload</span>
+      </form>
+    </div>
+
+    <!-- Basic Info -->
+    <form action="/profile" method="POST" class="space-y-4">
+      <div class="space-y-1.5">
+        <label class="block text-sm font-bold" for="fullname">Full Name</label>
+        <input
+          class="block w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:border-primary focus:ring-primary h-12 sm:text-sm"
+          id="fullname" name="fullname" type="text" required
+          value="<%= currentUser ? currentUser.name : '' %>"
+        />
+      </div>
+      <div class="space-y-1.5">
+        <label class="block text-sm font-bold" for="email">Email Address</label>
+        <input
+          class="block w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:border-primary focus:ring-primary h-12 sm:text-sm"
+          id="email" name="email" type="email" required
+          value="<%= currentUser ? currentUser.email : '' %>"
+        />
+      </div>
+      <button class="mt-2 inline-flex items-center justify-center rounded-xl bg-primary px-6 py-2.5 text-sm font-bold text-white hover:bg-blue-700 transition-all" type="submit">
+        Save Profile
+      </button>
+    </form>
+
+    <hr class="border-slate-200 dark:border-slate-700"/>
+
+    <!-- Change Password -->
+    <form action="/profile/password" method="POST" class="space-y-4">
+      <h2 class="text-lg font-bold">Change Password</h2>
+      <div class="space-y-1.5">
+        <label class="block text-sm font-bold" for="current_password">Current Password</label>
+        <input
+          class="block w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:border-primary focus:ring-primary h-12 sm:text-sm"
+          id="current_password" name="current_password" type="password" required
+        />
+      </div>
+      <div class="space-y-1.5">
+        <label class="block text-sm font-bold" for="new_password">New Password</label>
+        <input
+          class="block w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:border-primary focus:ring-primary h-12 sm:text-sm"
+          id="new_password" name="new_password" type="password" required
+        />
+      </div>
+      <div class="space-y-1.5">
+        <label class="block text-sm font-bold" for="confirm_password">Confirm New Password</label>
+        <input
+          class="block w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white focus:border-primary focus:ring-primary h-12 sm:text-sm"
+          id="confirm_password" name="confirm_password" type="password" required
+        />
+      </div>
+      <button class="mt-2 inline-flex items-center justify-center rounded-xl bg-primary px-6 py-2.5 text-sm font-bold text-white hover:bg-blue-700 transition-all" type="submit">
+        Update Password
+      </button>
+    </form>
+  </div>
+</main>
+
+<footer class="w-full py-6 text-center">
+  <p class="text-sm text-slate-500 dark:text-slate-400">© 2024 FindIt Inc. All rights reserved.</p>
+</footer>
+</body>
+</html>
